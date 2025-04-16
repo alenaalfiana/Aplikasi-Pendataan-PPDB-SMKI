@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Periode;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PeriodeController extends Controller
 {
@@ -12,6 +13,10 @@ class PeriodeController extends Controller
      */
     public function index(Request $request)
     {
+        if (!Auth::check()) {
+            abort(404); // Jika belum login, tampilkan halaman 404
+        }
+
         $search = $request->input('search');
 
         $periodes = Periode::query()

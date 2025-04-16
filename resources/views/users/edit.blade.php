@@ -15,7 +15,8 @@
                             </div>
                         @endif
 
-                        <form action="{{ route('users.update', ['user' => $user->id, 'source' => request('source')]) }}" method="POST">
+                        <form action="{{ route('users.update', ['user' => $user->id, 'source' => request('source')]) }}"
+                            method="POST">
                             @csrf
                             @method('PUT')
 
@@ -24,8 +25,7 @@
                                 <label for="name" class="form-label">Nama</label>
                                 <input type="text" name="name" id="name"
                                     class="form-control @error('name') is-invalid @enderror"
-                                    value="{{ old('name', $user->name) }}"
-                                    required
+                                    value="{{ old('name', $user->name) }}" required
                                     oninput="this.value = this.value.toUpperCase().replace(/[^A-Z\s]/g, '')">
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -43,6 +43,31 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <!-- Hidden field tetap diperlukan untuk memastikan nilai terkirim saat checkbox tidak dicentang -->
+                                    <input type="hidden" name="verify_email" value="0">
+
+                                    <!-- Checkbox akan tercentang jika email_verified_at tidak null -->
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        id="verify_email"
+                                        name="verify_email"
+                                        value="1"
+                                        {{ old('verify_email', $user->email_verified_at ? 1 : 0) == 1 ? 'checked' : '' }}
+                                    >
+                                    <label class="form-check-label" for="verify_email">
+                                        <span class="text-muted small d-block mb-1">
+                                            *Jika sudah tercentang, akun sudah terverifikasi.
+                                        </span>
+                                        <strong>Verifikasi email pengguna secara otomatis (tanpa perlu konfirmasi)</strong>
+                                    </label>
+
+                                </div>
+                            </div>
+
 
                             <!-- Password (Opsional) -->
                             <div class="mb-3">
@@ -113,8 +138,8 @@
                             </div>
 
                             <div class="mb-3">
-                                    <label for="alamat" class="form-label">Alamat Lengkap</label>
-                                    <textarea class="form-control" id="alamat" name="alamat" rows="3" required>{{ old('alamat', $user->alamat) }}</textarea>
+                                <label for="alamat" class="form-label">Alamat Lengkap</label>
+                                <textarea class="form-control" id="alamat" name="alamat" rows="3" required>{{ old('alamat', $user->alamat) }}</textarea>
                             </div>
 
                             <!-- Role -->
@@ -153,8 +178,8 @@
                                     <div class="mt-2 d-flex gap-2">
                                         <button type="button" class="btn btn-sm btn-danger"
                                             id="clear-signature">Hapus</button>
-                                        <input type="file" class="form-control form-control-sm"
-                                            id="upload-signature" accept="image/png,image/jpeg">
+                                        <input type="file" class="form-control form-control-sm" id="upload-signature"
+                                            accept="image/png,image/jpeg">
                                     </div>
                                     <small class="text-muted">Anda bisa menggambar tanda tangan atau mengunggah
                                         gambar (format PNG/JPEG).</small>
@@ -163,7 +188,8 @@
 
                             <div class="d-flex mt-4">
                                 <button type="submit" class="btn btn-primary me-2">Update</button>
-                                <a href="{{ route(request('source', 'users.index')) }}" class="btn btn-secondary">Kembali</a>
+                                <a href="{{ route(request('source', 'users.index')) }}"
+                                    class="btn btn-secondary">Kembali</a>
                             </div>
                         </form>
                     </div>
@@ -289,7 +315,7 @@
 
                         // **Menyesuaikan ukuran gambar agar proporsional**
                         const ratio = Math.min(canvas.width / img.width, canvas.height / img
-                        .height);
+                            .height);
                         const centerX = (canvas.width - img.width * ratio) / 2;
                         const centerY = (canvas.height - img.height * ratio) / 2;
 

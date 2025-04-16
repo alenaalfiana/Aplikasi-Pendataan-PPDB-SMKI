@@ -12,11 +12,18 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Mail\UserCredentialsMail;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
     public function index(Request $request)
     {
+        if (!Auth::check()) {
+            abort(404); // Jika belum login, tampilkan halaman 404
+        }
+
         $search = $request->input('search');
         $roleFilter = $request->input('role_as');
 
@@ -76,11 +83,15 @@ class UserController extends Controller
             'village_id' => 'nullable|exists:villages,id',
             'alamat' => 'nullable|string',
             'tanda_tangan' => 'nullable|string',
+            'verify_email' => 'boolean',  // This ensures it's treated as a boolean
         ]);
 
         // Inisialisasi variabel
         $tandaTanganPath = null;
         $tandaTanganBase64 = null;
+
+        // Simpan password yang belum di-hash untuk dikirim via email
+        $plainPassword = $request->password;
 
         // Proses tanda tangan jika ada
         if ($request->filled('tanda_tangan')) {
@@ -93,11 +104,11 @@ class UserController extends Controller
             }
         }
 
-        // Buat user baru
-        User::create([
+        // Siapkan data user
+        $userData = [
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($plainPassword),
             'role_as' => $request->role_as,
             'province_id' => $request->province_id,
             'regency_id' => $request->regency_id,
@@ -106,9 +117,35 @@ class UserController extends Controller
             'alamat' => $request->alamat,
             'tanda_tangan' => $tandaTanganBase64,
             'tanda_tangan_path' => $tandaTanganPath,
-        ]);
+        ];
 
-        return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan.');
+        // Cast verify_email to boolean and check its value
+        $verifyEmail = filter_var($request->verify_email, FILTER_VALIDATE_BOOLEAN);
+
+        // If verify_email is true, set email_verified_at to current time
+        if ($verifyEmail) {
+            $userData['email_verified_at'] = now();
+        } else {
+            $userData['email_verified_at'] = null; // Ensure it's null if false
+        }
+
+        // Buat user baru
+        $user = User::create($userData);
+
+        // Kirim email dengan informasi kredensial
+        try {
+            Mail::to($user->email)->send(new UserCredentialsMail([
+                'name' => $user->name,
+                'email' => $user->email,
+                'password' => $plainPassword, // Password yang belum di-hash
+                'verified' => $verifyEmail, // Add verification status
+            ]));
+        } catch (\Exception $e) {
+            // Log error jika pengiriman email gagal, tapi tetap lanjutkan proses
+            Log::error('Gagal mengirim email: ' . $e->getMessage());
+        }
+
+        return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan dan email kredensial telah dikirim.');
     }
 
     public function edit($id, Request $request)
@@ -146,11 +183,12 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
             'tanda_tangan' => 'nullable|string',
-            'province_id' => 'required|exists:provinces,id',
-            'regency_id' => 'required|exists:regencies,id',
-            'district_id' => 'required|exists:districts,id',
-            'village_id' => 'required|exists:villages,id',
-            'alamat' => 'required|string',
+            'province_id' => 'nullable|exists:provinces,id',
+            'regency_id' => 'nullable|exists:regencies,id',
+            'district_id' => 'nullable|exists:districts,id',
+            'village_id' => 'nullable|exists:villages,id',
+            'alamat' => 'nullable|string',
+            'verify_email' => 'boolean',  // Ensure it's treated as boolean
         ];
 
         if ($request->filled('password')) {
@@ -173,6 +211,15 @@ class UserController extends Controller
             'alamat' => $request->alamat,
         ];
 
+        // Cast verify_email to boolean and handle verification status
+        $verifyEmail = filter_var($request->verify_email, FILTER_VALIDATE_BOOLEAN);
+
+        if ($verifyEmail) {
+            $userData['email_verified_at'] = $user->email_verified_at ?? now();
+        } else {
+            $userData['email_verified_at'] = null;
+        }
+
         if (Auth::user()->role_as == 1) {
             $userData['role_as'] = $request->role_as;
         }
@@ -193,17 +240,22 @@ class UserController extends Controller
 
         $user->update($userData);
 
-        // Determine redirect route based on user's role
-        $redirectRoute = 'users.index'; // Default fallback
-        if ($user->role_as == 1) {
-            $redirectRoute = 'admin.dashboard';
-        } elseif ($user->role_as == 2) {
-            $redirectRoute = 'teacher.dashboard';
+        // Redirect berdasarkan role yang sedang login (Auth)
+        switch (Auth::user()->role_as) {
+            case 1:
+                $redirectRoute = 'users.index';
+                break;
+            case 2:
+                $redirectRoute = 'teacher.dashboard';
+                break;
+            case 0:
+            default:
+                $redirectRoute = 'student.dashboard'; // atau route sesuai kebutuhan siswa
+                break;
         }
 
         return redirect()->route($redirectRoute)->with('success', 'User berhasil diperbarui.');
     }
-
 
     public function show(User $user)
     {

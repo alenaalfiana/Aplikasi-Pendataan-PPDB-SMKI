@@ -85,14 +85,7 @@ Route::group(['middleware' => ['auth', 'isAdmin']], function () {
 });
 
 // Menampilkan daftar user
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
-Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-Route::post('/users', [UserController::class, 'store'])->name('users.store');
-Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
-Route::get('/users/{id}/detail', [UserController::class, 'getDetail'])->name('users.detail');
+
 
 Route::group(['middleware' => ['auth', 'isTeacher']], function () {
 
@@ -104,26 +97,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::middleware(['auth', 'isAdmin'])->group(function () {
-
-
-
-});
-
-// Surveyor routes for viewing their assignments
-Route::middleware(['auth', 'isTeacher'])->group(function () {
-    Route::get('/surveyor/dashboard', [PendataanSurveyorSiswaController::class, 'surveyorDashboard'])
-        ->name('surveyor.dashboard');
-
-    // Allow surveyor to mark assignments as complete
-    Route::patch('/surveyor/assignments/{id}/status', [PendataanSurveyorSiswaController::class, 'updateStatus'])
-        ->name('surveyor.assignments.update-status');
-});
-
-// Rute untuk login dengan login_code
-Route::get('/login/code', [LoginController::class, 'showLoginCodeForm'])->name('login.code');
-Route::post('/login/code', [LoginController::class, 'loginWithCode']);
-
-Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('pendataan_tpa_bhq', PendataanTpaBhqController::class);
 
@@ -139,19 +112,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/laporan-penerimaan/get-form-pendaftaran', [LaporanPenerimaanController::class, 'getFormPendaftaran'])->name('laporan-penerimaan.get-form-pendaftaran');
     Route::get('/laporan-penerimaan/{laporanPenerimaan}/download-ppt', [LaporanPenerimaanController::class, 'downloadPowerPoint'])->name('laporan-penerimaan.download-ppt');
     Route::get('/laporan-penerimaan/download/pdf', [LaporanPenerimaanController::class, 'downloadPdf'])->name('laporan-penerimaan.download');
-
-
-
-    Route::resource('pendataan-surveyor-siswa', PendataanSurveyorSiswaController::class);
-    Route::get('/surveyors-by-region', [PendataanSurveyorSiswaController::class, 'getSurveyorsByRegion']);
-    Route::get('/students-by-region', [PendataanSurveyorSiswaController::class, 'getStudentsByRegion']);
-    Route::get('/get-surveyor-details/{id_pendataan_surveyor_siswa}', [PendataanSurveyorSiswaController::class, 'getSurveyorDetails']);
-    Route::get('/get-available-students', [PendataanSurveyorSiswaController::class, 'getAllStudents']);
-
-
-    Route::get('/regencies/{province_id}', [PendataanSurveyorSiswaController::class, 'getRegencies']);
-    Route::get('/districts/{regency_id}', [PendataanSurveyorSiswaController::class, 'getDistricts']);
-    Route::get('/villages/{district_id}', [PendataanSurveyorSiswaController::class, 'getVillages']);
 
     Route::get('/periode', [PeriodeController::class, 'index'])->name('periode.index');
     Route::get('/periode/create', [PeriodeController::class, 'create'])->name('periode.create');
@@ -178,10 +138,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/registrasi_pengambilan/{id}', [RegistrasiPengambilanController::class, 'destroy'])->name('registrasi_pengambilan.destroy');
     Route::get('/registrasi_pengambilan/download/{id}', [RegistrasiPengambilanController::class, 'downloadPdf'])
         ->name('registrasi_pengambilan.download');
+});
+
+// Surveyor routes for viewing their assignments
+Route::middleware(['auth', 'isTeacher'])->group(function () {
+    Route::get('/surveyor/dashboard', [PendataanSurveyorSiswaController::class, 'surveyorDashboard'])
+        ->name('surveyor.dashboard');
+
+    // Allow surveyor to mark assignments as complete
+    Route::patch('/surveyor/assignments/{id}/status', [PendataanSurveyorSiswaController::class, 'updateStatus'])
+        ->name('surveyor.assignments.update-status');
+});
+
+// Rute untuk login dengan login_code
+Route::get('/login/code', [LoginController::class, 'showLoginCodeForm'])->name('login.code');
+Route::post('/login/code', [LoginController::class, 'loginWithCode']);
+
+Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('form_interview', [FormInterviewController::class, 'index'])->name('form_interview.index');
     Route::get('/form-interview/create/{id_pendataan_surveyor_siswa}', [FormInterviewController::class, 'create'])
-    ->name('form_interview.create');
+        ->name('form_interview.create');
     Route::post('form_interview', [FormInterviewController::class, 'store'])->name('form_interview.store');
     Route::get('form_interview/{id}', [FormInterviewController::class, 'show'])->name('form_interview.show');
     Route::get('form_interview/{id}/edit', [FormInterviewController::class, 'edit'])->name('form_interview.edit');
@@ -190,15 +167,33 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/form_interview/download/{id}', [FormInterviewController::class, 'downloadPdf'])->name('form_interview.download');
     Route::get('/get-family-dependents/{id_pendataan_surveyor_siswa}', [FormInterviewController::class, 'getFamilyDependents']);
 
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::get('/users/{id}/detail', [UserController::class, 'getDetail'])->name('users.detail');
 
     // Tambahkan route berikut di routes/api.php
     Route::get('/form-pendaftaran/{id}', 'API\FormPendaftaranController@show');
     Route::get('/form-pendaftaran/{id}', [FormInterviewController::class, 'getFormPendaftaran'])->name('form-pendaftaran.get');
     Route::get('/get-tanggungan-keluarga/{id}', [FormSurveyController::class, 'getTanggunganKeluarga']);
 
+    Route::resource('pendataan-surveyor-siswa', PendataanSurveyorSiswaController::class);
+    Route::get('/surveyors-by-region', [PendataanSurveyorSiswaController::class, 'getSurveyorsByRegion']);
+    Route::get('/students-by-region', [PendataanSurveyorSiswaController::class, 'getStudentsByRegion']);
+    Route::get('/get-surveyor-details/{id_pendataan_surveyor_siswa}', [PendataanSurveyorSiswaController::class, 'getSurveyorDetails']);
+    Route::get('/get-available-students', [PendataanSurveyorSiswaController::class, 'getAllStudents']);
+
+    Route::get('/regencies/{province_id}', [PendataanSurveyorSiswaController::class, 'getRegencies']);
+    Route::get('/districts/{regency_id}', [PendataanSurveyorSiswaController::class, 'getDistricts']);
+    Route::get('/villages/{district_id}', [PendataanSurveyorSiswaController::class, 'getVillages']);
+
     Route::get('form_survey', [FormSurveyController::class, 'index'])->name('form_survey.index');
     Route::get('/form-survey/create/{id_pendataan_surveyor_siswa}', [FormSurveyController::class, 'create'])
-    ->name('form_survey.create');
+        ->name('form_survey.create');
     Route::post('form_survey', [FormSurveyController::class, 'store'])->name('form_survey.store');
     Route::get('form_survey/{id}', [FormSurveyController::class, 'show'])->name('form_survey.show');
     Route::get('form_survey/{id}/edit', [FormSurveyController::class, 'edit'])->name('form_survey.edit');

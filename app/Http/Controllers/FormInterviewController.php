@@ -21,6 +21,10 @@ class FormInterviewController extends Controller
 {
     public function index(Request $request)
     {
+        if (!Auth::check()) {
+            abort(404); // Jika belum login, tampilkan halaman 404
+        }
+
         $search = $request->input('search');
         $id_periode = $request->input('id_periode');
         $user = Auth::user();

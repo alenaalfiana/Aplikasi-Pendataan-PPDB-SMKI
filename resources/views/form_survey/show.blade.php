@@ -221,15 +221,15 @@
                                 <div class="info-card-body">
                                     <div class="info-row">
                                         <div class="info-label">Rata-rata</div>
-                                        <div class="info-value">{{ $formSurvey->rata2_tpa ?? '-' }}</div>
+                                        <div class="info-value">{{ $formSurvey->formPendaftaran->pendataanTpaBhq->rata2_tpa ?? '-' }}</div>
                                     </div>
                                     <div class="info-row">
                                         <div class="info-label">Max</div>
-                                        <div class="info-value">{{ $formSurvey->max_tpa ?? '-' }}</div>
+                                        <div class="info-value">{{ $formSurvey->formPendaftaran->pendataanTpaBhq->max_tpa ?? '-' }}</div>
                                     </div>
                                     <div class="info-row">
                                         <div class="info-label">Min</div>
-                                        <div class="info-value">{{ $formSurvey->min_tpa ?? '-' }}</div>
+                                        <div class="info-value">{{ $formSurvey->formPendaftaran->pendataanTpaBhq->min_tpa ?? '-' }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -240,15 +240,15 @@
                                 <div class="info-card-body">
                                     <div class="info-row">
                                         <div class="info-label">Rata-rata</div>
-                                        <div class="info-value">{{ $formSurvey->rata2_tes_alquran ?? '-' }}</div>
+                                        <div class="info-value">{{ $formSurvey->formPendaftaran->pendataanTpaBhq->rata2_tes_alquran ?? '-' }}</div>
                                     </div>
                                     <div class="info-row">
                                         <div class="info-label">Max</div>
-                                        <div class="info-value">{{ $formSurvey->max_alquran ?? '-' }}</div>
+                                        <div class="info-value">{{ $formSurvey->formPendaftaran->pendataanTpaBhq->max_alquran ?? '-' }}</div>
                                     </div>
                                     <div class="info-row">
                                         <div class="info-label">Min</div>
-                                        <div class="info-value">{{ $formSurvey->min_alquran ?? '-' }}</div>
+                                        <div class="info-value">{{ $formSurvey->formPendaftaran->pendataanTpaBhq->min_alquran ?? '-' }}</div>
                                     </div>
                                 </div>
                             </div>

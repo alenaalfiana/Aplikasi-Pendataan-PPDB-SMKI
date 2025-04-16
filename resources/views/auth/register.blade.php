@@ -32,7 +32,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.png" />
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon/favicon.png') }}?v=1" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -78,7 +78,7 @@
 
 
               <h4 class="mb-2">Daftar Sekarang🚀</h4>
-              <p class="mb-4">untuk akses formulir pendaftaran!</p>
+              <p class="mb-4">untuk mulai akses aplikasi!</p>
 
               <form id="formAuthentication" class="mb-3" action="{{ route('register') }}" method="POST">
                 {{ csrf_field() }}
@@ -86,7 +86,7 @@
             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                 <div class="mb-3">
                   <label for="username" class="form-label">Nama Lengkap</label>
-                  <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Masukkan Username" required autofocus/>
+                  <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Masukkan Nama Lengkap" required autofocus oninput="this.value = this.value.toUpperCase();" />
                   @if ($errors->has('name'))
                     <span class="help-block">
                                           <strong>{{ $errors->first('name') }}</strong>
@@ -119,7 +119,7 @@
 
             <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                 <div class="mb-3 form-password-toggle">
-                  <label class="form-label" for="password-confirm">Confirm Password</label>
+                  <label class="form-label" for="password-confirm">Konfirmasi Password</label>
                   <div class="input-group input-group-merge">
                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" required>
                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
@@ -133,7 +133,7 @@
             </div>
 
               <br>
-                <button type="submit" class="btn btn-primary d-grid w-100">Sign up</button>
+                <button type="submit" class="btn btn-primary d-grid w-100">Daftar</button>
               </form>
 
               <p class="text-center">

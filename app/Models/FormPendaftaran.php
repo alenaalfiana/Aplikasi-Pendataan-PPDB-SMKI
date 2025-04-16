@@ -141,4 +141,9 @@ class FormPendaftaran extends Model
     {
         return $this->hasOne(FormSurvey::class, 'id_form_pendaftaran', 'id_form_pendaftaran');
     }
+
+        public function pendataanTpaBhq()
+    {
+        return $this->hasOne(PendataanTpaBhq::class, 'id_form_pendaftaran', 'id_form_pendaftaran');
+    }
 }

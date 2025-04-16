@@ -8,7 +8,7 @@
         <meta charset="utf-8" />
         <meta name="viewport"
             content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-        <title>Anagata Sisedu Nusantara | Forgot Password</title>
+        <title>PPDB SMKIU | Lupa Password</title>
         <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
         <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/boxicons.css') }}" />
         <link rel="stylesheet" href="{{ asset('assets/vendor/css/core.css') }}" />

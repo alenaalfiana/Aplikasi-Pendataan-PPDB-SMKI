@@ -18,6 +18,7 @@ use App\Models\District;
 use App\Models\Village;
 use App\Models\FormInterview;
 use App\Models\FormSurvey;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\SurveyorAssignmentNotification;
 use Illuminate\Support\Collection;
@@ -32,6 +33,10 @@ class PendataanSurveyorSiswaController extends Controller
      */
     public function index(Request $request): View
     {
+        if (!Auth::check()) {
+            abort(404); // Jika belum login, tampilkan halaman 404
+        }
+
         // Jika user surveyor, tampilkan detail seperti show method
         if (auth()->user()->role_as == 2) {
             $firstRecord = PendataanSurveyorSiswa::with('user')->where('id_user', auth()->id())->first();

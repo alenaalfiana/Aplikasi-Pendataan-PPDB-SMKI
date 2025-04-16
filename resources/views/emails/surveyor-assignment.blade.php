@@ -108,7 +108,7 @@
     </div>
 
     <div class="footer">
-        <p>&copy; {{ date('Y') }} Sistem Pendataan PPDB - SMK INFORMATIKA UTAMA. Semua hak dilindungi.</p>
+        <p>&copy; {{ date('Y') }} Sistem Pendataan PPDB - SMK INFORMATIKA UTAMA</p>
     </div>
 </body>
 </html>

@@ -1,7 +1,6 @@
 @extends(Auth::user()->role_as == '1' ? 'layouts.template' : (Auth::user()->role_as == '2' ? 'layoutss.template' : 'layoutsss.template'))
 
 @section('content')
-    <div id="app">
         <div class="container-xxl flex-grow-1 container-p-y">
             <main class="py-4">
                 <div class="d-flex justify-content-between mb-2">
@@ -113,7 +112,6 @@
                 </div>
             </main>
         </div>
-    </div>
 @endsection
 
 <div class="modal fade" id="userDetailModal" tabindex="-1" role="dialog" aria-labelledby="userDetailModalLabel" aria-hidden="true">

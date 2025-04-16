@@ -19,6 +19,10 @@ class FormSurveyController extends Controller
 {
     public function index(Request $request)
     {
+        if (!Auth::check()) {
+            abort(404); // Jika belum login, tampilkan halaman 404
+        }
+
         $search = $request->input('search');
         $id_periode = $request->input('id_periode');
         $user = Auth::user();
@@ -189,7 +193,7 @@ class FormSurveyController extends Controller
 
     public function show($id)
     {
-        $formSurvey = FormSurvey::findOrFail($id);
+        $formSurvey = FormSurvey::with(['pendataanTpaBhq'])->findOrFail($id);
         return view('form_survey.show', compact('formSurvey'));
     }
 

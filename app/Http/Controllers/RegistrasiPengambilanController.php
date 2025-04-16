@@ -12,6 +12,7 @@ use App\Models\Periode;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
@@ -20,6 +21,10 @@ class RegistrasiPengambilanController extends Controller
 {
     public function index(Request $request)
     {
+        if (!Auth::check()) {
+            abort(404); // Jika belum login, tampilkan halaman 404
+        }
+
         $search = $request->input('search');
         $periodeId = $request->input('periode_id');
 

@@ -14,6 +14,7 @@ use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\IOFactory;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Style\Color;
+use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpPresentation\Style\Fill;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -25,6 +26,10 @@ class LaporanPenerimaanController extends Controller
      */
     public function index(Request $request)
     {
+        if (!Auth::check()) {
+            abort(404); // Jika belum login, tampilkan halaman 404
+        }
+
         $query = LaporanPenerimaan::with([
             'formPendaftaran.registrasiPengambilan.periode',
             'periode'
@@ -269,6 +274,17 @@ class LaporanPenerimaanController extends Controller
     public function show(LaporanPenerimaan $laporanPenerimaan)
     {
         $reportData = $laporanPenerimaan->getDetailedReportData();
+
+        // Decode JSON jika perlu (cek dulu apakah string)
+        $survey = $reportData['survey'];
+        $survey->alasan_pendukung = is_string($survey->alasan_pendukung)
+            ? json_decode($survey->alasan_pendukung, true)
+            : $survey->alasan_pendukung;
+
+        $survey->alasan_memberatkan = is_string($survey->alasan_memberatkan)
+            ? json_decode($survey->alasan_memberatkan, true)
+            : $survey->alasan_memberatkan;
+
         return view('laporan-penerimaan.show', compact('laporanPenerimaan', 'reportData'));
     }
 

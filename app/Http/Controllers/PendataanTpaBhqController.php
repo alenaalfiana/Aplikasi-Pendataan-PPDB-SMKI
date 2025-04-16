@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PendataanTpaBhq;
 use App\Models\FormPendaftaran;
 use App\Models\Periode;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class PendataanTpaBhqController extends Controller
@@ -14,6 +15,10 @@ class PendataanTpaBhqController extends Controller
      */
     public function index(Request $request)
     {
+        if (!Auth::check()) {
+            abort(404); // Jika belum login, tampilkan halaman 404
+        }
+
         $search = $request->input('search');
         $id_periode = $request->input('id_periode'); // Ambil nilai filter periode
 

@@ -29,21 +29,22 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        cache()->flush();
-
-        if ($user->role_as == '1') // Admin
-        {
-            return redirect()->route('admin.dashboard')->with('status', 'Selamat Datang di Dashboard!');
-        }
-        if ($user->role_as == '2') // Teacher
-        {
-            return redirect()->route('teacher.dashboard')->with('status', 'Selamat Datang di Dashboard!');
-        }
-        if ($user->role_as == '0') // User Biasa
-        {
-            return redirect()->route('user.dashboard')->with('status', 'Selamat Datang di Dashboard!');
+        // Jika user tidak ditemukan atau role_as tidak valid, tampilkan halaman 404
+        if (is_null($user) || !in_array($user->role_as, ['0', '1', '2'])) {
+            abort(404);
         }
 
-        return redirect('/')->with('status', 'Log-in Berhasil!');
+        // Redirect berdasarkan role_as
+        switch ($user->role_as) {
+            case '1': // Admin
+                return redirect()->route('admin.dashboard')->with('status', 'Selamat Datang di Dashboard!');
+            case '2': // Teacher
+                return redirect()->route('teacher.dashboard')->with('status', 'Selamat Datang di Dashboard!');
+            case '0': // User Biasa
+                return redirect()->route('user.dashboard')->with('status', 'Selamat Datang di Dashboard!');
+            default:
+                // Jika role_as tidak dikenali, redirect ke halaman utama
+                return redirect('/')->with('status', 'Log-in Berhasil!');
+        }
     }
 }

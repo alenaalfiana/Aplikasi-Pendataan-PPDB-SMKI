@@ -97,8 +97,13 @@ class FormSurvey extends Model
         return $this->belongsTo(PendataanSurveyorSiswa::class, 'id_pendataan_surveyor_siswa');
     }
 
-    public function pendataanSurveyorSiswa()
-{
-    return $this->belongsTo(PendataanSurveyorSiswa::class, 'id_pendataan_surveyor_siswa', 'id_pendataan_surveyor_siswa');
-}
+        public function pendataanSurveyorSiswa()
+    {
+        return $this->belongsTo(PendataanSurveyorSiswa::class, 'id_pendataan_surveyor_siswa', 'id_pendataan_surveyor_siswa');
+    }
+
+    public function pendataanTpaBhq()
+    {
+        return $this->belongsTo(PendataanTpaBhq::class, 'id_pendataan_tpa_bhq', 'id_pendataan_tpa_bhq');
+    }
 }

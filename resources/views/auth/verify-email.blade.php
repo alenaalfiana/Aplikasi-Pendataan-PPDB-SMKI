@@ -15,7 +15,7 @@
             <meta name="description" content="" />
 
             <!-- Favicon -->
-            <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.png" />
+            <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon/favicon.png') }}?v=1" />
 
             <!-- Fonts -->
             <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -140,7 +140,7 @@
 
                             @if (session('status') == 'verification-link-sent')
                                 <div class="alert">
-                                    Link verifikasi yang baru telah dikirimkan ulang ke alamat email saat registrasi
+                                    Link verifikasi yang baru telah dikirimkan ulang ke alamat email yang didaftarkan oleh Admin
                                 </div>
                             @endif
 
@@ -154,7 +154,7 @@
 
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <p><button type="submit" class="btn-link">Log Out</button></p>
+                                <p><button type="submit" class="btn-link">Keluar</button></p>
                             </form>
                         </div>
     </body>

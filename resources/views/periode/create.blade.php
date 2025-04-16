@@ -58,7 +58,7 @@
                                         <label for="tahun_periode" class="form-label">Tahun Periode</label>
                                         <input type="text" class="form-control" id="tahun_periode" name="tahun_periode"
                                             value="{{ old('tahun_periode') }}" required pattern="^\d{4}\/\d{4}$"
-                                            oninput="this.value = this.value.replace(/[^0-9\/]/g, '')">
+                                            oninput="this.value = this.value.replace(/[^0-9\/]/g, '')" placeholder="Ketik dengan format xxxx/xxxx">
                                     </div>
 
                                     <div class="row mb-3">

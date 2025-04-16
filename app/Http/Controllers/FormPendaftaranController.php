@@ -10,6 +10,7 @@ use App\Models\Village;
 use App\Models\FormPendaftaran;
 use App\Models\Periode;
 use App\Models\RegistrasiPengambilan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -20,6 +21,10 @@ class FormPendaftaranController extends Controller
 {
     public function index(Request $request)
     {
+        if (!Auth::check()) {
+            abort(404); // Jika belum login, tampilkan halaman 404
+        }
+
         $search = $request->input('search');
         $id_periode = $request->input('id_periode'); // Ambil nilai filter periode
 

@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Email Verification</title>
+        <title>Reset Password</title>
     </head>
 
     <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
@@ -41,7 +41,7 @@
             <tr>
                 <td
                     style="padding: 20px 30px; background-color: #f0f8ff; text-align: center; color: #666666; font-size: 14px;">
-                    <p>&copy; {{ date('Y') }} Sistem Pendataan PPDB - SMK INFORMATIKA UTAMA. Semua hak dilindungi.</p>
+                    <p>&copy; {{ date('Y') }} Sistem Pendataan PPDB - SMK INFORMATIKA UTAMA</p>
                 </td>
             </tr>
         </table>

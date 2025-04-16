@@ -32,7 +32,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.png" />
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon/favicon.png') }}?v=1" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -85,11 +85,18 @@
             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                 <div class="mb-3">
                   <label for="email" class="form-label">Email</label>
-                  <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Masukkan E-mail Anda" autofocus/>
+                  <input id="email" type="email" class="form-control" name="email"
+                  value="{{ old('email') }}"
+                  placeholder="Masukkan E-mail Anda"
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                  maxlength="255"
+                  required
+                  autofocus/>
                   @if ($errors->has('email'))
+                  <br>
 <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
+                                                            <strong>{{ $errors->first('email') }}</strong>
+                                                        </span>
 @endif
                 </div>
 
@@ -99,46 +106,47 @@
                     <label class="form-label" for="password">Password</label>
                     @if ($errors->has('password'))
 <span class="help-block">
-                            <strong>{{ $errors->first('password') }}</strong>
-                        </span>
+                                                    <strong>{{ $errors->first('password') }}</strong>
+                                                </span>
 @endif
                   </div>
                   <div class="input-group input-group-merge">
-                    <input
-                        type="password"
-                        id="password"
-                        class="form-control"
-                        name="password"
-                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                        aria-describedby="password"
-                    />
+                    <input type="password"
+                    id="password"
+                    class="form-control"
+                    name="password"
+                    placeholder="••••••••"
+                    aria-describedby="password"
+                    minlength="8"
+                    maxlength="8"
+                    required />
                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                 </div>
                 <div class="d-flex justify-content-end mt-2">
                     @if (Route::has('password.request'))
 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
-                            {{ __('Lupa Password?') }}
-                        </a>
+                                                    {{ __('Lupa Password?') }}
+                                                </a>
 @endif
                 </div>
 
                 <div class="mb-3">
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }} />
-                    <label class="form-check-label" for="remember-me"> Remember Me </label>
+                    <label class="form-check-label" for="remember-me"> Ingat saya </label>
                   </div>
                 </div>
                 <div class="mb-3">
-                  <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
+                  <button class="btn btn-primary d-grid w-100" type="submit">Masuk</button>
                 </div>
               </form>
 
-              <p class="text-center">
+              {{-- <p class="text-center">
                 <span>Baru bergabung?</span>
                 <a href="{{ route('register') }}">
                   <span>Buat Akun</span>
                 </a>
-              </p>
+              </p> --}}
             </div>
             </div>
           </div>
